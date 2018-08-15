@@ -30,7 +30,7 @@ im2.save('blur_test.jpg', 'jpeg')
 
 
 
-ImageEnhance中有一些锐化、对比度等操作，如
+ImageEnhance中有一些锐化、对比度等操作:
 
 
 from PIL import Image, ImageEnhance

@@ -1,0 +1,72 @@
+# 图像有很多种格式转化，上文中主要描述了图片的和矩阵的关系，本文是图像的不同格式
+# link address1: https://blog.csdn.net/icamera0/article/details/50843172
+# link address2: https://blog.csdn.net/icamera0/article/details/50647465
+用Python处理图像——PIL库就是PIL(Python Imaging Library)
+
+安装
+可以使用pip安装也可以编译安装，不过这里注意打开图片的时候需要一些依赖库的支持，打开png需要libpng，打开jpg需要libjpeg，如果编译的时候没装这些依赖库的话会忽略这些功能导致之后使用的时候打不开对应的文件。
+
+文件句柄Image
+安装完了就可以使用Image模块里的Image类进行图片文件的操作了，如果要打开一个文件，可以这样写
+
+from PIL import Image
+im = Image.open("test.jpg")
+这时候我们就取得了一个图片文件的句柄，实际上文件的数据已经被load进im对象中了，PIL的种种操作都是基于这个Image类的，具体来说就是input一个Image对象，处理完之后给你返回一个新的Image对象。
+
+而Image对象自身有一些方法可以得到图像一些基本信息以及每个点的像素信息。
+im.save(‘test.jpg’, ‘jpeg’)	保存到文件，第二个参数为格式
+im.show()	显示图像，会启动一个新窗口
+im.size	(这是属性不是方法)得到图像的大小，返回值为tuple
+im = im.convert(‘L’)	色彩空间的转换，支持RGB、CMYK等常见空间，注意这个函数不是就地的结果保存在返回值里
+im.colors()	很有用的方法，返回颜色统计列表(count, color)，可以判断图像中的色彩分布
+im.hist()	直方图，与colors方法类似，但直接返回的是每个像素的直方高度
+im.getpixel((x, y))	得到某个像素点的颜色，一般返回(r, g, b)
+im.putpixel((x, y), color)	设置某个像素点的颜色，这个操作是就地的
+扩展操作ImageEnhance, ImageFilter
+Image中还有个方法filter，配合ImageFilter中的一些filter使用可以进行模糊等操作，如
+
+from PIL import Image, ImageFilter
+im = Image.open('test.jpg')
+im2 = im.filter(ImageFilter.BLUR)
+im2.save('blur_test.jpg', 'jpeg')
+可以实现模糊效果
+
+
+
+ImageEnhance中有一些锐化、对比度等操作，如
+
+
+from PIL import Image, ImageEnhance
+im = Image.open('test.jpg')
+enhancer = ImageEnhance.Sharpness(im)
+
+for i in range(8):
+    factor = i / 4.0
+    enhancer.enhance(factor).show("Sharpness %f" % factor)
+这里调用enhance方法，返回的仍然是一个Image，程序中直接用show显示，也可以用save保存。
+
+另外，Image也支持直接使用数据流string等构建与导出图片，这样直接在内存中操作速度比较快。
+
+Demo:
+Py_pic = "C:/资料/12345/beautiful/python/1.jpg"
+from PIL import Image, ImageFilter, ImageEnhance
+import numpy as np
+import random
+img = Image.open(Py_pic)
+
+"""
+可以把图片模糊化
+"""
+# img = img.filter(ImageFilter.BLUR)
+# img.save("blur.jpg")
+
+"""
+锐化对比度
+"""
+enhancer = ImageEnhance.Sharpness(img)
+for i in range(8):
+    factor = i / 4.0
+    enhancer.enhance(factor).show("Sharpness %f" % factor)
+ 
+    
+    

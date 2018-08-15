@@ -1,6 +1,3 @@
-# 图像有很多种格式转化，上文中主要描述了图片的和矩阵的关系，本文是图像的不同格式
-# link address1: https://blog.csdn.net/icamera0/article/details/50843172
-# link address2: https://blog.csdn.net/icamera0/article/details/50647465
 用Python处理图像——PIL库就是PIL(Python Imaging Library)
 
 安装
